@@ -1,7 +1,5 @@
 "use strict";
 
-/* ========== Data soal ========== */
-// answer = indeks jawaban benar (mulai dari 0)
 const QUESTIONS = [
   // JavaScript
   { category: "JavaScript", q: "Keyword mana yang membuat variabel yang nilainya tidak bisa di-assign ulang?", options: ["var", "let", "const", "static"], answer: 2 },
@@ -38,7 +36,6 @@ const TIME_LIMIT = 15; // detik per soal
 const SCORE_KEY = "quizHighScores";
 const THEME_KEY = "quizTheme";
 
-/* ========== Elemen & state ========== */
 const $ = (id) => document.getElementById(id);
 const screens = { start: $("screen-start"), quiz: $("screen-quiz"), result: $("screen-result") };
 const el = {
@@ -51,7 +48,6 @@ const el = {
 };
 const state = { list: [], index: 0, score: 0, locked: false, timerId: null, timeLeft: TIME_LIMIT, category: "" };
 
-/* ========== Helper ========== */
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -61,7 +57,6 @@ function shuffle(arr) {
   return a;
 }
 
-// Navigasi SPA: tampilkan satu layar, sembunyikan yang lain (tanpa reload)
 function show(name) {
   Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; });
 }
@@ -80,7 +75,6 @@ function saveScore(category, score) {
   return isNew;
 }
 
-/* ========== Layar mulai ========== */
 function renderCategories() {
   el.categories.replaceChildren();
   const scores = loadScores();
@@ -95,7 +89,6 @@ function renderCategories() {
   el.startHigh.textContent = "Skor tertinggi tiap kategori tersimpan di browser ini.";
 }
 
-/* ========== Alur kuis ========== */
 function startQuiz(category) {
   const pool = category === "Acak" ? QUESTIONS : QUESTIONS.filter((item) => item.category === category);
   state.category = category;
@@ -118,7 +111,6 @@ function renderQuestion() {
   el.feedback.className = "feedback";
   el.next.hidden = true;
 
-  // Render pilihan jawaban dengan createElement + textContent
   el.options.replaceChildren();
   item.options.forEach((text, i) => {
     const btn = document.createElement("button");
@@ -129,9 +121,8 @@ function renderQuestion() {
     el.options.appendChild(btn);
   });
 
-  // Animasi transisi antar soal
   el.box.classList.remove("enter");
-  void el.box.offsetWidth; // restart animasi
+  void el.box.offsetWidth; 
   el.box.classList.add("enter");
 
   startTimer();
